@@ -87,6 +87,24 @@ vim.opt.foldlevel = 99
 -- 添加到你的配置文件中
 vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#ffcc66" }) -- 设置内联提示的颜色
 
+-- 自动保存会话
+vim.api.nvim_create_autocmd("VimLeave", {
+    pattern = "*",
+    callback = function()
+      vim.cmd("mksession! " .. vim.fn.stdpath("data") .. "/session.vim")
+    end,
+  })
+  
+  vim.api.nvim_create_autocmd("VimEnter", {
+    pattern = "*",
+    callback = function()
+      local session_path = vim.fn.stdpath("data") .. "/session.vim"
+      if vim.fn.filereadable(session_path) == 1 then
+        vim.cmd("source " .. session_path)
+      end
+    end,
+  })
+
 vim.api.nvim_create_autocmd('TextYankPost', {
     group = vim.api.nvim_create_augroup('highlight_yank', {}),
     desc = 'Hightlight selection on yank',
