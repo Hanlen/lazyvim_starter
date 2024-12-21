@@ -30,10 +30,10 @@ map("n", "so", "<C-w>o", opt)
 -- map("n", "L", "<C-w>l", opt)
 -- 左右Tab切换
 
-map("n", "<C-Left>", "<C-w>h", { desc = "Move cursor to left window" })
-map("n", "<C-Right>", "<C-w>l", { desc = "Move cursor to right window" })
-map("n", "<C-Down>", "<C-w>j", { desc = "Move cursor to down window" })
-map("n", "<C-Up>", "<C-w>k", { desc = "Move cursor to up window" })
+map("n", "<C-h>", "<C-w>h", opt)
+map("n", "<C-l>", "<C-w>l", opt)
+map("n", "<C-j>", "<C-w>j", opt)
+map("n", "<C-k>", "<C-w>k", opt)
 
 -- 上下移动选中文本
 map("v", "J", ":move '>+1<CR>gv-gv", opt)

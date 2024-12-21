@@ -11,19 +11,19 @@
 -- * override the configuration of LazyVim plugins
 return {
     -- add gruvbox
-    {
-        "ellisonleao/gruvbox.nvim",
-        priority = 1000,
-        config = function()
-            require("gruvbox").setup({
-                contrast = "medium", -- 可选："hard", "soft", "medium"
-                palette_overrides = {},
-                overrides = {},
-                transparent_mode = false, -- 开启透明背景
-            })
-            vim.cmd("colorscheme gruvbox") -- 设置主题
-        end,
-    },
+    -- {
+    --     "ellisonleao/gruvbox.nvim",
+    --     priority = 1000,
+    --     config = function()
+    --         require("gruvbox").setup({
+    --             contrast = "medium", -- 可选："hard", "soft", "medium"
+    --             palette_overrides = {},
+    --             overrides = {},
+    --             transparent_mode = false, -- 开启透明背景
+    --         })
+    --         vim.cmd("colorscheme gruvbox") -- 设置主题
+    --     end,
+    -- },
 
 --   {
 --     "neovim/nvim-lspconfig",
@@ -114,7 +114,6 @@ return {
             "shfmt",
             "flake8",
             "clangd",
-            "lazygit",
         },
         },
     },

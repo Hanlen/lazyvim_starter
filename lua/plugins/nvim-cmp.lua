@@ -2,11 +2,12 @@ return {
     -- 代码补全插件
     "hrsh7th/nvim-cmp",
     dependencies = {
-        "hrsh7th/cmp-cmdline",
-        "hrsh7th/vim-vsnip",
-        "hrsh7th/cmp-path",
-        'hrsh7th/cmp-nvim-lsp',
-        "hrsh7th/cmp-buffer"
+        "hrsh7th/cmp-nvim-lsp",  -- LSP 源
+        "hrsh7th/cmp-buffer",    -- 缓冲区补全
+        "hrsh7th/cmp-path",      -- 路径补全
+        "hrsh7th/cmp-cmdline",   -- 命令行补全
+        "L3MON4D3/LuaSnip",      -- Snippet 引擎
+        "saadparwaiz1/cmp_luasnip", -- Snippet 源
     },
     config = function()
         local cmp = require("cmp")
