@@ -30,6 +30,7 @@ return {
                 "clangd",
                 "--background-index",
                 "--clang-tidy",
+                "--inlay-hints=true", -- 启用内联提示
                 "--header-insertion=never",
                 "--completion-style=detailed",
                 "--function-arg-placeholders",

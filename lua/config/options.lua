@@ -84,6 +84,9 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldlevel = 99
 
+-- 添加到你的配置文件中
+vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#ffcc66" }) -- 设置内联提示的颜色
+
 vim.api.nvim_create_autocmd('TextYankPost', {
     group = vim.api.nvim_create_augroup('highlight_yank', {}),
     desc = 'Hightlight selection on yank',
