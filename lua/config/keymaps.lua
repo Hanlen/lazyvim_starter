@@ -64,7 +64,8 @@ map("n", "<leader>l", ":Lazy<CR>", opt)
 map("n", "q", ":q<CR>", opt)
 map("n", "qq", ":q!<CR>", opt)
 map("n", "Q", ":qa!<CR>", opt)
-map("t", "<Esc>", "<C-\\><C-n>", opt)
+--map("t", "<Esc>", "<C-\\><C-n>", opt)
+map("t", "<C-t>", "<C-\\><C-n>", opt)
 
 --cmake
 -- map("n", "<leader>cg", ":CMakeGenerate<CR>", opt)
