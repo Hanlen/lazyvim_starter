@@ -14,7 +14,7 @@ local map = vim.api.nvim_set_keymap
 
 -- 复用 opt 参数
 local opt = { noremap = true, silent = true }
-map("n", "r", "<C-r>", opt)
+--map("n", "r", "<C-r>", opt)
 -- 取消 s 默认功能
 map("n", "s", "", opt)
 -- windows 分屏快捷键
@@ -25,10 +25,23 @@ map("n", "sc", "<C-w>c", opt)
 -- 关闭其他
 map("n", "so", "<C-w>o", opt)
 
+map('n', 'yy', '"+yy', { noremap = true, silent = true })
+map('n', 'ya', '"ay', { noremap = true, silent = true })
+map('n', 'yb', '"by', { noremap = true, silent = true })
+map('n', 'yc', '"cy', { noremap = true, silent = true })
+
+map('v', 'y', '"+y', { noremap = true, silent = true })
+map('v', 'ya', '"ay', { noremap = true, silent = true })
+map('v', 'yb', '"by', { noremap = true, silent = true })
+map('v', 'yc', '"cy', { noremap = true, silent = true })
+
 -- Shift + hl  左右窗口之间跳转
 -- map("n", "H", "<C-w>h", opt)
 -- map("n", "L", "<C-w>l", opt)
 -- 左右Tab切换
+--
+map("n", ";", ":BufferLineCyclePrev<CR>", opt)
+map("n", "'", ":BufferLineCycleNext<CR>", opt)
 
 map("n", "<C-h>", "<C-w>h", opt)
 map("n", "<C-l>", "<C-w>l", opt)
