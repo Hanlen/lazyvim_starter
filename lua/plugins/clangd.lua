@@ -2,7 +2,7 @@ return {
     {
         "neovim/nvim-lspconfig",
         opts = {
-            inlay_hints = { enabled = false },
+            inlay_hints = { enabled = true },
             diagnostics = {
                 underline = false,
                 update_in_insert = false,
@@ -27,20 +27,20 @@ return {
             require'lspconfig'.clangd.setup {
                 capabilities = capabilities,
                 cmd = {
-                "clangd",
-                "--background-index",
-                "--clang-tidy",
-                "--inlay-hints=true", -- 启用内联提示
-                "--header-insertion=never",
-                "--completion-style=detailed",
-                "--function-arg-placeholders",
-                "--fallback-style=llvm",
-                '--compile-commands-dir=' .. vim.fn.getcwd() .. '/build',
+                    "clangd",
+                    "--background-index",
+                    "--clang-tidy",
+                    "--inlay-hints=true", -- 启用内联提示
+                    "--header-insertion=never",
+                    "--completion-style=detailed",
+                    "--function-arg-placeholders",
+                    "--fallback-style=llvm",
+                    '--compile-commands-dir=' .. vim.fn.getcwd() .. '/build',
                 },
                 init_options = {
-                usePlaceholders = true,
-                completeUnimported = true,
-                clangdFileStatus = true,
+                    usePlaceholders = true,
+                    completeUnimported = true,
+                    clangdFileStatus = true,
                 },
             }
         end

@@ -76,11 +76,20 @@ return {
         keys = {},
         config = function()
             local dap = require("dap")
-            dap.adapters.lldb = {
-                id = 'lldb',
+            -- dap.adapters.gdb = {
+            --     id = 'gdb',
+            --     type = 'executable',
+            --     command = '/usr/bin/gdb',
+            --     name = 'gdb'
+            -- },
+            dap.adapters.cppdbg = {
+                id = 'gdb',
                 type = 'executable',
-                command = '/opt/homebrew/opt/llvm@18/bin/lldb-dap',
-                name = 'lldb'
+                command = '/home/hanlen/.vscode/extensions/ms-vscode.cpptools-1.23.2-linux-x64/debugAdapters/bin/OpenDebugAD7',
+                name = 'cppdbg',
+                options = {
+                    detached = false,
+                },
             }
            
             --mapping = require("config.keymaps").mapDAP()

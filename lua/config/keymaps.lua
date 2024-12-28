@@ -27,13 +27,9 @@ map("n", "so", "<C-w>o", opt)
 
 map('n', 'yy', '"+yy', { noremap = true, silent = true })
 map('n', 'ya', '"ay', { noremap = true, silent = true })
-map('n', 'yb', '"by', { noremap = true, silent = true })
-map('n', 'yc', '"cy', { noremap = true, silent = true })
 
 map('v', 'y', '"+y', { noremap = true, silent = true })
 map('v', 'ya', '"ay', { noremap = true, silent = true })
-map('v', 'yb', '"by', { noremap = true, silent = true })
-map('v', 'yc', '"cy', { noremap = true, silent = true })
 
 -- Shift + hl  左右窗口之间跳转
 -- map("n", "H", "<C-w>h", opt)
@@ -75,48 +71,48 @@ map("t", "<C-t>", "<C-\\><C-n>", opt)
 
 function GetCommitSHA()
     local api = vim.api
+
     local cache = require('gitsigns.cache').cache
     local bufnr = api.nvim_get_current_buf()
     local bcache = cache[bufnr]
     if not bcache then
-            return ""
-        end
-
-    bcache:get_blame()
+        return ""
+    end
     local blame = assert(bcache.blame)
     local blm_win = api.nvim_get_current_win()
     local cursor = unpack(api.nvim_win_get_cursor(blm_win))
     local cur_sha = blame[cursor].commit.abbrev_sha
     if string.match(cur_sha, "00000000") then
-            return ""
-        end
-    return cur_sha
-end
-
-function OpenCurrentFileChange()
-    local api = vim.api
-    local cur_sha = GetCommitSHA()
-    if cur_sha == "" then
-            api.nvim_command('DiffviewFileHistory %')
+        return ""
     else
-        api.nvim_command('DiffviewFileHistory % --range='.. cur_sha)
-    end
+        return cur_sha
+    end     
 end
 
-function OpenCurrentCommit()
-    local api = vim.api
+function DiffviewHistory()
     local cur_sha = GetCommitSHA()
+    local api = vim.api
     if cur_sha == "" then
-            api.nvim_command('DiffviewOpen')
-    else
-        api.nvim_command('DiffviewOpen ' .. cur_sha .. '^!')
-    end
+        print("Can't find a valid commit sha")
+    else  
+        api.nvim_command('DiffviewFileHistory % --range=' .. cur_sha)
+    end 
 end
 
-map("n", "<leader>gv", ":DiffviewOpen<CR>", opt)
-map("n", "<leader>go", ":DiffviewClose<CR>", opt)
-map("n", "<leader>gf", ":lua OpenCurrentFileChange()<CR>", opt)
-map("n", "<leader>gc", ":lua OpenCurrentCommit()<CR>", opt)
+function DiffviewCurrentCommit()
+    local cur_sha = GetCommitSHA()
+    local api = vim.api
+    if cur_sha == "" then
+        print("Can't find a valid commit sha")
+    else  
+        api.nvim_command('DiffviewOpen ' .. cur_sha .. "^!")
+    end 
+end
+
+map("n", "go", ":DiffviewClose<CR>", opt)
+map("n", "gh", ":DiffviewOpen<CR>", opt)
+map("n", "gb", ":lua DiffviewHistory()<CR>", opt)
+map("n", "gB", ":lua DiffviewCurrentCommit()<CR>", opt)
 
 map(
     "n",
