@@ -76,21 +76,22 @@ return {
         keys = {},
         config = function()
             local dap = require("dap")
-            -- dap.adapters.gdb = {
-            --     id = 'gdb',
-            --     type = 'executable',
-            --     command = '/usr/bin/gdb',
-            --     name = 'gdb'
-            -- },
-            dap.adapters.cppdbg = {
+            dap.adapters.gdb = {
                 id = 'gdb',
                 type = 'executable',
-                command = '/home/hanlen/.vscode/extensions/ms-vscode.cpptools-1.23.2-linux-x64/debugAdapters/bin/OpenDebugAD7',
-                name = 'cppdbg',
-                options = {
-                    detached = false,
-                },
+                command = '/usr/bin/gdb',
+                name = 'gdb',
+                args = {'-i','dap'},
             }
+            -- dap.adapters.cppdbg = {
+            --     id = 'gdb',
+            --     type = 'executable',
+            --     command = '/home/hanlen/.vscode/extensions/ms-vscode.cpptools-1.23.2-linux-x64/debugAdapters/bin/OpenDebugAD7',
+            --     name = 'cppdbg',
+            --     options = {
+            --         detached = false,
+            --     },
+            -- }
            
             --mapping = require("config.keymaps").mapDAP()
             vim.api.nvim_set_hl(0, "red",   { fg = "#ff0000" }) 

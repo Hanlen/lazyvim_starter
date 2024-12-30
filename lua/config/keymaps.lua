@@ -69,6 +69,9 @@ map("t", "<C-t>", "<C-\\><C-n>", opt)
 -- map("n", "<leader>ci", ":CMakeInstall<CR>", opt)
 -- map("n", "<leader>cc", ":CMakeClean<CR>", opt)
 
+-- cpp diagnostics
+map("n", "cd", ":Trouble diagnostics toggle<CR>", opt)
+
 function GetCommitSHA()
     local api = vim.api
 
