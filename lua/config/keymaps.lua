@@ -31,13 +31,14 @@ map('n', 'ya', '"ay', { noremap = true, silent = true })
 map('v', 'y', '"+y', { noremap = true, silent = true })
 map('v', 'ya', '"ay', { noremap = true, silent = true })
 
--- Shift + hl  左右窗口之间跳转
--- map("n", "H", "<C-w>h", opt)
--- map("n", "L", "<C-w>l", opt)
--- 左右Tab切换
---
-map("n", ";", ":BufferLineCyclePrev<CR>", opt)
-map("n", "'", ":BufferLineCycleNext<CR>", opt)
+map("n", "H", ":BufferLineCyclePrev<CR>", opt)
+map("n", "L", ":BufferLineCycleNext<CR>", opt)
+
+map("n", "ff", ":Telescop find_files<CR>", opt)
+map( 'n', 'fc',
+  [[:lua require('telescope.builtin').find_files({ prompt_title = "Neovim Config", cwd = "~/.config/nvim" })<CR>]],
+  { noremap = true, silent = true }
+)
 
 map("n", "<C-h>", "<C-w>h", opt)
 map("n", "<C-l>", "<C-w>l", opt)
@@ -137,4 +138,88 @@ map("n", "<F8>", ":lua require('dap').step_out()<CR>", opt)
 map("n", "<F9>", ":lua require('dap').toggle_breakpoint()<CR>", opt)
 map("n", "<F10>", ":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", opt)
 map("n", "<F11>", ":lua require('dap').set_breakpoint({ nil, nil, vim.fn.input('Log point message: ') })<CR>", opt)
+
+
+-- function find_corresponding_file()
+--   local telescope = require("telescope.builtin")
+--   local Path = require("plenary.path")
+--   local current_file = vim.fn.expand("%:t") -- 当前文件名
+--   local target_file
+--
+--   if current_file:match("%.cpp$") then
+--     target_file = current_file:gsub("%.cpp$", ".h")
+--   elseif current_file:match("%.h$") then
+--     target_file = current_file:gsub("%.h$", ".cpp")
+--   else
+--     vim.notify("current file is not .cpp or .h files", vim.log.levels.WARN)
+--     return
+--   end
+--
+--   local search_dir = vim.fn.getcwd() -- 从项目根目录开始
+--
+--   telescope.find_files({
+--     prompt_title = "Find Corresponding File",
+--     cwd = search_dir,
+--     search_dirs = { search_dir },
+--     find_command = { "rg", "--files", "--glob", target_file }, -- 用 rg 定位对应文件
+--   })
+-- end
+--
+-- map( "n", "<Leader>tf", ":lua find_corresponding_file()<CR>",
+--   { noremap = true, silent = true }
+-- )
+
+
+function find_corresponding_file()
+  local Path = require("plenary.path")
+  local Job = require("plenary.job")
+  local current_file = vim.fn.expand("%:t") -- Get current file name
+  local target_file
+
+  -- Determine the corresponding file extension
+  if current_file:match("%.cpp$") then
+    target_file = current_file:gsub("%.cpp$", ".h")
+  elseif current_file:match("%.h$") then
+    target_file = current_file:gsub("%.h$", ".cpp")
+  else
+    vim.notify("Current file is not a .cpp or .h file", vim.log.levels.WARN)
+    return
+  end
+
+  -- Search for the target file using ripgrep
+  Job:new({
+    command = "rg",
+    args = { "--files", "--glob", target_file, "--hidden", "--no-ignore" },
+    cwd = vim.fn.getcwd(),
+    on_exit = function(job, return_val)
+      vim.schedule(function() -- Ensure code runs in Neovim's main loop
+        if return_val ~= 0 then
+          vim.notify("No corresponding file found for: " .. target_file, vim.log.levels.WARN)
+          return
+        end
+
+        local results = job:result()
+        if #results == 0 then
+          vim.notify("No corresponding file found for: " .. target_file, vim.log.levels.WARN)
+        elseif #results == 1 then
+          -- Open the file directly if only one match is found
+          vim.cmd("edit " .. results[1])
+        else
+          -- Use Telescope to show multiple matches
+          require("telescope.builtin").find_files({
+            prompt_title = "Find Corresponding File",
+            cwd = vim.fn.getcwd(),
+            default_text = target_file,
+            find_command = { "rg", "--files", "--glob", target_file, "--hidden", "--no-ignore" },
+          })
+        end
+      end)
+    end,
+  }):start()
+end
+
+-- Map the function to a key
+map( "n", "<Leader>cf", ":lua find_corresponding_file()<CR>",
+  { noremap = true, silent = true }
+)
 
