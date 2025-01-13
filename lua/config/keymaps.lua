@@ -218,8 +218,23 @@ function find_corresponding_file()
   }):start()
 end
 
+--function jump_to_source_file()
+--  -- 获取当前文件的路径
+--  local file_path = vim.fn.expand('%')
+--  -- 提取第一个 '/' 之后的部分
+--  local relative_path = file_path:match('/.*') or file_path
+--  -- 关闭差异视图
+--  vim.cmd('DiffviewClose')
+--  -- 打开源文件
+--  vim.cmd('e ' .. relative_path)
+--end
+
+-- 映射快捷键
+map("n", "<leader>js", ":lua jump_to_source_file()<CR>", { desc = 'Jump to source file from diffview' })
+
 -- Map the function to a key
 map( "n", "<Leader>cf", ":lua find_corresponding_file()<CR>",
   { noremap = true, silent = true }
 )
+
 

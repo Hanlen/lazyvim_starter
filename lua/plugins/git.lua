@@ -29,21 +29,33 @@ return {
     {
         "lewis6991/gitsigns.nvim",
         event = "VeryLazy",
-        config = function ()
-            require('gitsigns').setup {
-                current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
-                current_line_blame_opts = {
-                        virt_text = true,
-                        virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
-                        delay = 100,
-                        ignore_whitespace = false,
-                        virt_text_priority = 100,
-                        use_focus = true,
-                    },
-                signcolumn = false,  -- Toggle with `:Gitsigns toggle_signs`
-                current_line_blame_formatter = '[<abbrev_sha>] <author> (<author_time:%R>) - <summary>',
-            }
-        end
+	opts = {
+    signs = {
+      add = { text = "+" },
+      change = { text = "~" },
+      delete = { text = "_" },
+      topdelete = { text = "‾" },
+      changedelete = { text = "~" },
+    },
+    on_attach = function(bufnr)
+      local gs = package.loaded.gitsigns
+
+      -- 导航到下一处修改
+      vim.keymap.set("n", "]c", function()
+        if vim.wo.diff then return "]c" end
+        vim.schedule(function() gs.next_hunk() end)
+        return "<Ignore>"
+      end, { expr = true, buffer = bufnr, desc = "Next Git hunk" })
+
+      -- 导航到上一处修改
+      vim.keymap.set("n", "[c", function()
+        if vim.wo.diff then return "[c" end
+        vim.schedule(function() gs.prev_hunk() end)
+        return "<Ignore>"
+      end, { expr = true, buffer = bufnr, desc = "Previous Git hunk" })
+
+    end,
+  },
     }
             
 }
